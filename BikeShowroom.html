@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Enfield Website</title>
+    <script src="jsfile.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        *{
+            margin: 0%;
+            padding: 0%;
+            height: auto;
+            width: auto;
+        }
+
+        body { 
+            background: url('https://www.royalenfield.com/content/dam/royal-enfield-revamp/header/shop/configure/continental-gt-650.webp') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .bg-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+
+        
+        }
+        .header {
+            background-color: rgba(172,25,62,0.95);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 118%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            
+           
+        }
+
+        .img{
+            
+            padding: 0%;
+            margin-right: 25%;
+            height: 50px;
+            width: 30px;
+            
+
+        }
+        .header .title {
+           
+            text-align: center;
+            padding: 0%;
+            
+            
+        }
+        .titmenu {
+            display: flex;
+            padding: 20px;
+            justify-content: center;
+        }
+        .form {
+            border: 2px solid black;
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0px 0px 6px;
+            border-radius: 3px;
+            width: 400px;
+            text-align: left;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 80px;
+            
+        }
+
+        .container, .header, .form, .menu { z-index: 1; position: relative; }
+        .form_container{
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            
+        }           
+        .login{
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .link{
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin-top: 20px;
+        }
+        .btn{
+            text-align: center;
+            margin-left: 110px;
+        }
+        
+        .name, .email, .phone, .bikemodel, .serdate{
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+        
+        }
+        .serdatebtn {
+            display: flex;
+            align-items: center;
+            padding-right: 90px;
+        }
+
+        
+    </style>
+</head>
+<body class="body">
+    <div class="bg-overlay"></div>
+    <div class="container">
+        
+        <div class="header">
+           
+        
+               <div class="title">
+                <h1>Royal Enfield Bike Service</h1>
+            </div>
+            
+        
+        <div class="menu">
+            <Menu style="font-size: 20px; margin-top: 10px;">
+            <a href="homepage.html" style="color: white; text-decoration: none; margin-right: 15px;">Home</a>
+            <a href="https://www.royalenfield.com/in/en/bikes/" style="color: white; text-decoration: none; margin-right: 15px;">Bikes</a>
+            <a href="https://www.royalenfield.com/in/en/service/" style="color: white; text-decoration: none; margin-right: 15px;">Service</a>
+            <a href="booking.html" style="color: white; text-decoration: none; margin-right: 15px;">Book</a>
+            <a href="https://www.royalenfield.com/in/en/shop/" style="color: white; text-decoration: none; margin-right: 15px;">Shop</a>
+            <a href="https://www.royalenfield.com/in/en/explore/" style="color: white; text-decoration: none;">Explore</a>
+            <a href="user_login.html" style="color: white; text-decoration: none; margin-left: 15px;">User Login</a>
+            <a href="admin_login.html" style="color: white; text-decoration: none; margin-left: 10px;">Admin Login</a>
+            <a href="registration.html" style="color: white; text-decoration: none; margin-left: 10px;">Register</a>
+            <a href="#" id="logoutBtn" style="color: white; text-decoration: none; margin-left: 10px;">Logout</a>
+        
+        </div>
+        </div>
+    
+        <div class="form">
+            <div class="login">
+                <h2> User / Admin</h2>
+            </div>
+            <div class="form_container text-center">
+                <p><a class="btn btn-primary mb-2" href="user_login.html">User Login</a></p>
+                <p><a class="btn btn-secondary mb-2" href="admin_login.html">Admin Login</a></p>
+                <p><a class="btn btn-outline-dark" href="registration.html">Register new user</a></p>
+            </div>
+        </div>
+    
+    <div class="link">
+        <div class="bikeser">
+            <a href="booking.html">Book a Bike Service </a>
+        </div>
+        <div class="Contact">
+            <a href="http://127.0.0.1:5500/SampleWebPage/grid.html"> Explore </a>
+        </div>
+    </div>
+    
+
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</html>
