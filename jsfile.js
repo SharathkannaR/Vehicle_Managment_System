@@ -4,6 +4,7 @@ const API_BASE = "http://127.0.0.1:8000/api";
 
 function setAuth(token) {
     localStorage.setItem('authToken', token);
+    console.log('Token stored:', token.substring(0, 20) + '...');
 }
 
 function getAuth() {
@@ -12,6 +13,7 @@ function getAuth() {
 
 function setUser(user) {
     localStorage.setItem('user', JSON.stringify(user));
+    console.log('User stored:', user);
 }
 
 function getUser() {
@@ -22,6 +24,7 @@ function getUser() {
 function clearAuth() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    console.log('Auth cleared');
 }
 
 async function handleLogin(e, isAdmin = false) {
@@ -29,16 +32,24 @@ async function handleLogin(e, isAdmin = false) {
     const form = e.target;
     const email = form.querySelector('#email').value;
     const password = form.querySelector('#password').value;
+    
+    console.log('Login attempt:', { email, isAdmin });
+    
     try {
         const res = await fetch(`${API_BASE}/login/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
+        console.log('Login response status:', res.status);
+        
         const data = await res.json();
+        console.log('Login response data:', data);
+        
         if (res.ok && data.token) {
             setAuth(data.token);
             setUser(data.user || { email });
+            alert('Login successful!');
             if (isAdmin) {
                 window.location.href = 'admin_homepage.html';
             } else {
@@ -48,8 +59,8 @@ async function handleLogin(e, isAdmin = false) {
             alert(data.message || 'Login failed');
         }
     } catch (err) {
-        console.error(err);
-        alert('Network or server error');
+        console.error('Login error:', err);
+        alert('Network or server error: ' + err.message + '\n\nMake sure backend is running on http://127.0.0.1:8000');
     }
 }
 
@@ -60,23 +71,31 @@ async function handleRegister(e) {
     const phone = form.querySelector('#phone').value;
     const email = form.querySelector('#email').value;
     const password = form.querySelector('#password').value;
+    
+    console.log('Registration attempt:', { name, phone, email });
+    
     try {
         const res = await fetch(`${API_BASE}/register/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, phone, email, password })
         });
+        console.log('Registration response status:', res.status);
+        
         const data = await res.json();
+        console.log('Registration response data:', data);
+        
         if (res.ok && data.token) {
             setAuth(data.token);
             setUser(data.user || { name, email, phone });
+            alert('Registration successful! Welcome!');
             window.location.href = 'homepage.html';
         } else {
-            alert(data.message || 'Registration failed');
+            alert(data.message || 'Registration failed: ' + JSON.stringify(data));
         }
     } catch (err) {
-        console.error(err);
-        alert('Network or server error');
+        console.error('Registration error:', err);
+        alert('Network or server error: ' + err.message + '\n\nMake sure backend is running on http://127.0.0.1:8000');
     }
 }
 
@@ -122,12 +141,19 @@ async function fetchHistory() {
     const token = getAuth();
     if (!token) return null;
     try {
-        const res = await fetch(`${API_BASE}/user/history/`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (!res.ok) return null;
+        const res = await fetch(`${API_BASE}/user/history/`, { 
+            headers: { 'Authorization': `Bearer ${token}` },
+            method: 'GET'
+        });
+        if (!res.ok) {
+            console.log('History fetch failed:', res.status);
+            return null;
+        }
         const data = await res.json();
-        return data.history || data;
+        console.log('History data:', data);
+        return Array.isArray(data) ? data : data.history || [];
     } catch (err) {
-        console.error(err);
+        console.error('History fetch error:', err);
         return null;
     }
 }
@@ -182,14 +208,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // if we are on homepage, try to populate user history
     const historyContainer = document.getElementById('historyContainer');
+    const historySection = document.getElementById('historySection');
     if (historyContainer) {
         fetchHistory().then(history => {
+            console.log('Fetched history:', history);
             if (!history) {
-                historyContainer.innerHTML = '<p>Please <a href="user_login.html">login</a> to view your history.</p>';
+                historyContainer.innerHTML = '<p>Please <a href="user_login.html">login</a> to view your service history.</p>';
+                if (historySection) historySection.style.display = 'block';
                 return;
             }
-            if (!history.length) {
-                historyContainer.innerHTML = '<p>No service history found. <a href="booking.html">Book a new service</a></p>';
+            if (!Array.isArray(history) || history.length === 0) {
+                historyContainer.innerHTML = '<p>No service bookings found. <a href="booking.html">Book a new service</a></p>';
+                if (historySection) historySection.style.display = 'block';
                 return;
             }
             const list = document.createElement('ul');
@@ -197,11 +227,12 @@ document.addEventListener('DOMContentLoaded', function() {
             history.forEach(it => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item';
-                li.textContent = `${it.date || it.serviceDate || it.created_at} - ${it.serviceType || it.type} - ${it.bikeModel || ''}`;
+                li.textContent = `${it.serviceDate} - ${it.serviceType} - ${it.bikeModel} (${it.status || 'pending'})`;
                 list.appendChild(li);
             });
-            historyContainer.innerHTML = '<h4>Your Service History</h4>';
+            historyContainer.innerHTML = '<h4 class="mb-3">Your Service History</h4>';
             historyContainer.appendChild(list);
+            if (historySection) historySection.style.display = 'block';
         });
     }
 
